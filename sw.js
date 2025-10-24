@@ -1,6 +1,6 @@
 self.addEventListener("install", function(event) {
   event.waitUntil(
-    caches.open("zamereni-cache-v2").then(function(cache) {
+    caches.open("zamereni-cache-v3").then(function(cache) {
       return cache.addAll([
         "./index.html",
         "./style.css",
@@ -12,6 +12,7 @@ self.addEventListener("install", function(event) {
         "./js/json_import_export.js",
         "./js/csv_export.js",
         "./js/pdf_generator.js",
+        "./js/deeplink.js",
         "./manifest.json",
         "./icon-192.png",
         "./icon-512.png"

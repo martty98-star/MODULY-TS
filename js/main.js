@@ -38,6 +38,12 @@ import {
 
 import { initPdfExport } from './pdf_generator.js';
 
+import {
+  initDeeplink,
+  loadFromDeeplink,
+  shareDeeplinkGlobal
+} from './deeplink.js';
+
 // === GLOBÁLNÍ FUNKCE VOLANÉ Z HTML =================================================
 // (tyto funkce musí být přístupné z inline onclick atributů v HTML)
 
@@ -46,6 +52,7 @@ window.addRow = addRow;
 window.autoFillSpojky = autoFillSpojky;
 window.scheduleSaveDraft = scheduleSaveDraft;
 window.clearDraft = clearDraft;
+window.shareDeeplink = shareDeeplinkGlobal;
 
 // === INICIALIZACE PŘI NAČTENÍ STRÁNKY ==============================================
 
@@ -58,13 +65,18 @@ document.addEventListener('DOMContentLoaded', () => {
     attachAutosaveListeners
   });
 
-  // === 2) Automatické vyplnění z URL parametrů ===
-  autofillFromURL();
+  // === 2) Zkusit načíst deeplink z URL (nejvyšší priorita) ===
+  const loadedFromDeeplink = loadFromDeeplink();
 
-  // === 3) Připojení autosave listenerů na celý dokument ===
+  // === 3) Automatické vyplnění z URL parametrů (pouze pokud není deeplink) ===
+  if (!loadedFromDeeplink) {
+    autofillFromURL();
+  }
+
+  // === 4) Připojení autosave listenerů na celý dokument ===
   attachAutosaveListeners(document);
 
-  // === 4) Inicializace select enhancement (search filter) ===
+  // === 5) Inicializace select enhancement (search filter) ===
   try {
     enhanceAllIn(document);
     initSelectEnhancement();
@@ -72,30 +84,35 @@ document.addEventListener('DOMContentLoaded', () => {
     console.warn('Select enhancement chyba:', e);
   }
 
-  // === 5) Načtení rozpracovaného formuláře z localStorage ===
-  loadDraftIfAny();
+  // === 6) Načtení rozpracovaného formuláře z localStorage (pouze pokud není deeplink) ===
+  if (!loadedFromDeeplink) {
+    loadDraftIfAny();
+  }
 
-  // === 6) Zajištění default řádků v sekcích ===
+  // === 7) Zajištění default řádků v sekcích ===
   try {
     ensureDefaultRows();
   } catch (e) {
     console.warn('ensureDefaultRows chyba:', e);
   }
 
-  // === 7) Inicializace pivních vedení (autofill spojky) ===
+  // === 8) Inicializace pivních vedení (autofill spojky) ===
   initPivniVedeniListener();
 
-  // === 8) Inicializace JSON importu ===
+  // === 9) Inicializace JSON importu ===
   initJsonImport();
 
-  // === 9) Inicializace PDF exportu (pokud je implementováno) ===
+  // === 10) Inicializace PDF exportu (pokud je implementováno) ===
   initPdfExport();
 
-  // === 10) Inicializace offline queue ===
+  // === 11) Inicializace deeplink tlačítka ===
+  initDeeplink();
+
+  // === 12) Inicializace offline queue ===
   initOfflineQueue();
   processSendQueue(); // Pokusit se odeslat čekající položky
 
-  // === 11) Povolení "Uložit data" tlačítka ===
+  // === 13) Povolení "Uložit data" tlačítka ===
   const saveBtn = Array.from(document.querySelectorAll('button'))
     .find(b => b.getAttribute('onclick') && b.getAttribute('onclick').includes('ulozitData'));
   if (saveBtn) saveBtn.disabled = false;
