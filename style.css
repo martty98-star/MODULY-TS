@@ -1,0 +1,368 @@
+/* ===== STYL STRÁNKY CSS - PC TELEFON ===== */
+#vyplnilSection .row {
+  display: grid;
+  grid-template-columns: 280px 1fr;
+  gap: 1.2rem;
+  align-items: center;
+}
+#vyplnilSection input[type="text"],
+#vyplnilSection input[type="date"] {
+  width: 100%;
+  max-width: 100%;
+  min-width: 0;
+  padding: .6rem .75rem;
+  font-size: 1rem;
+}
+@media (max-width: 600px) {
+  #vyplnilSection .row {
+    grid-template-columns: 1fr !important;
+    gap: .6rem !important;
+    align-items: start !important;
+  }
+  #vyplnilSection .row > label {
+    display: block;
+    margin-bottom: .25rem;
+    font-size: 1rem;
+    line-height: 1.2;
+  }
+  #vyplnilSection input[type="text"],
+  #vyplnilSection input[type="date"] {
+    width: 100% !important;
+    max-width: 100% !important;
+    padding: .5rem .6rem !important;
+    font-size: .98rem !important;
+  }
+  #vyplnilSection { padding-left: .9rem; padding-right: .9rem; }
+}
+.note-field {
+  margin-top: 0.8rem;
+  height: 60px;
+  resize: none;
+  font-size: .95rem;
+}
+#umisteniSection .row{
+  display:grid;
+  grid-template-columns:280px 1fr;
+  gap:1.2rem;
+  align-items:start;
+  margin-bottom:1.6rem;
+  padding-bottom:1rem;
+  border-bottom:1px solid #eee;
+}
+#umisteniSection .row:last-child{ border-bottom:none; }
+#umisteniSection label{ font-weight:bold; line-height:1.5; }
+#umisteniSection .row > div{ line-height:1.9; }
+#umisteniSection .opts{
+  display:flex; flex-wrap:wrap; gap:.9rem 1.2rem;
+  margin-bottom:.4rem;
+}
+#umisteniSection input[type="radio"],
+#umisteniSection input[type="checkbox"]{ margin-left:.6rem; margin-right:.35rem; }
+#umisteniSection input[type="text"]{
+  margin-top:.4rem; margin-bottom:.2rem;
+  padding:.5rem .65rem; border:1px solid #ccc; border-radius:6px; width:100%;
+  box-sizing:border-box; font-size:.95rem;
+}
+#dohodySection {
+  background: #fff;
+  padding: 1.5rem 1.75rem;
+  border-radius: 12px;
+  margin: 0 auto 1.5rem;
+  box-shadow: 0 2px 10px rgba(0,0,0,.06);
+  max-width: 1200px;
+}
+#dohodySection h2 {
+  margin: 0 0 1rem;
+  padding-bottom: .5rem;
+  border-bottom: 2px solid #b99742;
+  color: #222;
+  font-size: 1.15rem;
+}
+#dohodySection .row {
+  display: grid;
+  grid-template-columns: 280px 1fr;
+  gap: 1.2rem;
+  align-items: start;
+  margin-bottom: 1.6rem;
+  padding-bottom: 1rem;
+  border-bottom: 1px solid #eee;
+}
+#dohodySection .row:last-child { border-bottom: none; }
+#dohodySection label { font-weight: bold; line-height: 1.5; }
+#dohodySection .row div {
+  line-height: 1.9;
+  margin-bottom: .3rem;
+}
+#dohodySection input[type="radio"],
+#dohodySection input[type="checkbox"] { margin-left: .8rem; margin-right: .4rem; }
+#dohodySection input[type="text"],
+#dohodySection select,
+#dohodySection textarea {
+  margin-top: .5rem;
+  margin-bottom: .5rem;
+  padding: .5rem .65rem;
+  border-radius: 6px;
+  border: 1px solid #ccc;
+  width: 100%;
+  box-sizing: border-box;
+  font-size: .95rem;
+}
+#dohodySection textarea { resize: vertical; min-height: 80px; }
+.rows {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+  gap: 1rem;
+}
+.section .rows { 
+  display:grid; 
+  grid-template-columns: 1fr;
+  gap: .6rem; 
+}
+.col { display: flex; flex-direction: column; }
+.col label { font-weight: bold; margin-bottom: .4rem; }
+* { box-sizing: border-box; }
+body { font-family: sans-serif; margin: 0; padding: 1rem; background: #f5f5f5; }
+h1 { text-align: center; font-size: clamp(1.5rem, 4vw, 2rem); color: #333; margin: 0 0 1.5rem; }
+small.subtle { color:#666; display:block; text-align:center; margin-bottom:1.5rem; }
+.form-header {
+  background: #fff;
+  padding: 1rem 1.25rem;
+  border-radius: 10px;
+  box-shadow: 0 0 6px rgba(0,0,0,.08);
+  margin: 0 auto 1.25rem;
+  max-width: 1200px;
+}
+.form-header .grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit,minmax(220px,1fr));
+  gap: .8rem 1rem;
+}
+label { font-weight: 600; color: #333; display:block; margin-bottom:.35rem; }
+input[type="text"], input[type="number"], input[type="date"], select, textarea {
+  width:100%; padding:.55rem .6rem; border:1px solid #ccc; border-radius:6px; font-size:1rem; background:#fff;
+}
+.section {
+  background: #fff;
+  padding: 1.2rem 1.25rem 1rem;
+  border-radius: 12px;
+  margin: 0 auto 1rem;
+  box-shadow: 0 2px 10px rgba(0,0,0,.06);
+  max-width: 1200px;
+}
+.section h2 {
+  margin: 0 0 .75rem;
+  padding-bottom: .5rem;
+  border-bottom: 2px solid #b99742;
+  color: #222;
+  font-size: 1.15rem;
+}
+.row {
+  display: grid;
+  grid-template-columns: minmax(260px, 1fr) 110px 40px;
+  gap: .6rem;
+  align-items: center;
+}
+.row select, .row input[type="number"] { height: 40px; }
+.controls { display:flex; gap:.5rem; flex-wrap:wrap; justify-content:flex-end; margin-top:.6rem; }
+button {
+  display:inline-flex; align-items:center; justify-content:center;
+  padding:.55rem .9rem; border:none; border-radius:8px; cursor:pointer; font-weight:600;
+}
+button.primary { background:#b99742; color:#fff; }
+button.primary:hover { background:#a68435; }
+button.ghost { background:#f0f0f0; color:#333; }
+button.ghost:hover { background:#e6e6e6; }
+.icon-btn { width:40px; height:40px; border-radius:8px; background:#f0f0f0; }
+.icon-btn:hover { background:#e6e6e6; }
+.icon { font-size:18px; line-height:1; pointer-events:none; }
+.button-row { display:flex; gap:.8rem; justify-content:center; flex-wrap:wrap; margin: 1.2rem auto 0; max-width:1200px; }
+.notice { color:#666; font-size:.9rem; text-align:center; margin-top:.4rem; }
+@media (max-width: 560px) { .row { grid-template-columns: 1fr 90px 40px; } }
+
+@media (max-width: 768px) {
+  #dohodySection .row,
+  #umisteniSection .row {
+    grid-template-columns: 1fr !important;
+    gap: .75rem !important;
+    align-items: start !important;
+  }
+  #dohodySection .row > label,
+  #umisteniSection .row > label {
+    margin-bottom: .25rem;
+  }
+  #dohodySection,
+  #umisteniSection {
+    word-break: break-word;
+    overflow-wrap: anywhere;
+    hyphens: auto;
+    -webkit-hyphens: auto;
+  }
+  #dohodySection .row > div,
+  #umisteniSection .row > div {
+    display: block;
+    line-height: 1.7;
+  }
+  #dohodySection label > input[type="radio"],
+  #dohodySection label > input[type="checkbox"],
+  #umisteniSection label > input[type="radio"],
+  #umisteniSection label > input[type="checkbox"] {
+    margin-left: 0;
+    margin-right: .35rem;
+  }
+  #dohodySection .opts,
+  #umisteniSection .opts {
+    display: flex;
+    flex-wrap: wrap;
+    gap: .4rem .9rem;
+    margin-top: .25rem;
+  }
+  #dohodySection input[type="text"],
+  #dohodySection select,
+  #dohodySection textarea,
+  #umisteniSection input[type="text"],
+  #umisteniSection select,
+  #umisteniSection textarea {
+    width: 100%;
+    max-width: 100%;
+  }
+}
+#dohodySection .row > div,
+#umisteniSection .row > div {
+  overflow-wrap: anywhere;
+}
+.row1 {  display: grid;
+  grid-template-columns: minmax(260px, 1fr) 110px 40px;
+  gap: .6rem;
+  align-items: center;
+}
+.row1 {grid-template-columns: 1fr 90px 40px; }
+
+
+/* ================================================================== */
+/* === STYLY PRO TISK / ULOŽENÍ DO PDF ============================== */
+/* ================================================================== */
+@media print {
+  body {
+    padding: 0;
+    margin: 0;
+    background: #fff;
+    font-size: 10pt;
+  }
+  
+  /* Skryjeme všechny nepotřebné prvky */
+  .button-row, .notice, .controls, .icon-btn, small.subtle {
+    display: none !important;
+  }
+  
+  /* Zajistíme, aby se formulář roztáhl na celou šířku stránky */
+  #formWrapper, .section, .form-header {
+    max-width: 100% !important;
+    width: 100% !important;
+    box-shadow: none !important;
+    border: 1px solid #ccc;
+    margin-bottom: 10px;
+    padding: 1rem;
+  }
+  
+  /* Zabráníme rozdělení sekcí přes více stránek */
+  .section, .form-header {
+    page-break-inside: avoid;
+  }
+
+  /* Optimalizace layoutu pro tisk */
+  .form-header .grid {
+    grid-template-columns: 1fr 1fr; /* Dva sloupce v hlavičce */
+  }
+  
+  /* Všechny řádky v sekcích budou mít label vlevo a hodnotu vpravo */
+  .section .row, #dohodySection .row, #umisteniSection .row, #vyplnilSection .row {
+    grid-template-columns: 200px 1fr !important;
+    gap: 1rem !important;
+  }
+  
+  /* Dynamické řádky s materiálem budou pod sebou */
+  .section .rows .row {
+    grid-template-columns: 1fr 80px !important; /* Položka a počet kusů */
+  }
+  
+  /* Skryje tlačítko pro smazání řádku v tisku */
+  .section .rows .row .icon-btn {
+    display: none !important;
+  }
+
+  /* Vynutí zobrazení hodnot v inputech (některé prohlížeče je skrývají) */
+  input, textarea, select {
+    border: 1px solid #ddd !important;
+    background: #f9f9f9 !important;
+    -webkit-print-color-adjust: exact; /* Vynutí tisk barev pozadí */
+    print-color-adjust: exact;
+  }
+  
+  textarea {
+    min-height: 40px;
+  }
+}
+
+/* ============================================================= */
+/* PATCH: vyhledávací pole pro selecty + mobilní stacking řádku  */
+/* ============================================================= */
+
+/* Wrapper, který script.js vkládá okolo každého <select> */
+.select-filter-wrap{
+  display: grid;
+  grid-template-columns: 1fr;
+  grid-auto-rows: auto;
+  gap: .45rem;
+}
+
+/* Pořadí uvnitř wrapperu: 1) položka (select) 2) vyhledávání 3) nástroje */
+.select-filter-wrap > select{ order: 1; height: 40px; } /* výška sladěná s .row */
+.select-filter{
+  order: 2;
+  width: 100%;
+  padding: .5rem .6rem;
+  border: 1px solid #ccc;
+  border-radius: 6px;
+  font-size: .95rem;
+}
+.select-filter-tools{
+  order: 3;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: .5rem;
+  font-size: .875rem;
+  color: #666;
+}
+.select-filter-reset{
+  border: 1px solid #ddd;
+  background: #eee;
+  padding: .3rem .6rem;
+  border-radius: 6px;
+  cursor: pointer;
+}
+.select-filter-reset:hover{ background: #e6e6e6; }
+.select-filter-count{ opacity: .75; }
+
+/* Příjemný focus pro přístupnost */
+.select-filter:focus{
+  outline: 2px solid rgba(185,151,66,.35);
+  outline-offset: 2px;
+}
+
+/* --- MOBILE: položka (select+vyhledávání) přes celou šířku,
+   pod tím řádek s počtem a košem --- */
+@media (max-width: 560px){
+  .section .rows .row .select-filter-wrap{
+    grid-column: 1 / -1; /* roztáhni přes všechny tři sloupce .row */
+  }
+}
+
+/* --- PRINT: vyhledávací UI do tisku netahej --- */
+@media print{
+  .select-filter,
+  .select-filter-tools{
+    display: none !important;
+  }
+}
+

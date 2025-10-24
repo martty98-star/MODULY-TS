@@ -1,0 +1,27 @@
+{
+  "name": "ZAMĚŘENÍ TS",
+  "short_name": "ZAMĚŘENÍ TS",
+  "start_url": "./index.html",
+  "scope": "/",
+  "display": "standalone",
+  "background_color": "#ffffff",
+  "theme_color": "#b99742",
+  "icons": [
+    {
+      "src": "icon-512.png",
+      "sizes": "512x512",
+      "type": "image/png"
+    }
+  ],
+  "url_handlers": [
+    {
+      "origin": "https://zamereni-ts.netlify.app"
+    }
+  ],
+  "protocol_handlers": [
+    {
+      "protocol": "web+zamerenits",
+      "url": "https://zamereni-ts.netlify.app/?q=%s"
+    }
+  ]
+}

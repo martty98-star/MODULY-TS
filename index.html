@@ -1,0 +1,849 @@
+<!DOCTYPE html>
+<html lang="cs" data-lang="cz">
+<head>
+  <meta charset="utf-8"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <link rel="manifest" href="manifest.json"/>
+  <meta name="theme-color" content="#b99742"/>
+  <title>ZAMĚŘENÍ TS</title>
+
+  <link rel="stylesheet" href="style.css">
+  <link rel="icon" href="favicon.ico" type="image/x-icon">
+  <link rel="shortcut icon" href="favicon.ico" type="image/x-icon">
+
+  <!-- DŮLEŽITÉ: defer = až po DOM, aby addRow nenarazil na neexistující sekce -->
+  <script src="script.js" defer></script>
+</head>
+
+<body>
+<div id="formWrapper">
+
+  <!-- SEKCE DIVŮ -->
+
+  <small class="subtle">Pokud objevíte chybu tak to poslušně hlašte Martinovi Krbcovi +420 735 189 416</small>
+
+  <div class="form-header">
+    <div class="grid">
+      <div>
+        <label for="sapId">SAP ID</label>
+        <input id="sapId" name="sapId" inputmode="numeric" placeholder="Zadej SAP ID nebo IČO" type="text"/>
+      </div>
+      <div>
+        <label for="nazevProvozovny">NÁZEV PROVOZOVNY</label>
+        <input id="nazevProvozovny" name="nazevProvozovny" placeholder="Zadej název provozovny" type="text"/>
+      </div>
+      <div>
+        <label for="adresaProvozovny">ADRESA PROVOZOVNY</label>
+        <input id="adresaProvozovny" name="adresaProvozovny" placeholder="Zadej adresu provozovny" type="text"/>
+      </div>
+      <div>
+        <label for="cisloTracku">ČÍSLO TRACKU</label>
+        <input id="cisloTracku" name="cisloTracku" inputmode="numeric" placeholder="Zadej číslo TRACKu" type="text"/>
+      </div>
+      <div>
+        <label for="pozadovanyDatum">POŽADOVANÝ DATUM INSTALACE</label>
+        <input id="pozadovanyDatum" name="pozadovanyDatum" type="text"/>
+      </div>
+      <div>
+        <label for="kontakt">ZÁK. JMÉNO + KONTAKT</label>
+        <input id="kontakt" name="zakaznik" type="text"/>
+      </div>
+    </div>
+  </div>
+
+  <div id="umisteniSection" class="section">
+    <h2>Umístění a montáž</h2>
+    <div class="row">
+      <label>Bude instalovat externí firma?</label>
+      <div>
+        <label><input type="radio" name="ext_firma" value="ANO"> ANO</label>
+        <label><input type="radio" name="ext_firma" value="NE"> NE</label>
+      </div>
+    </div>
+    <div class="row">
+      <label>Umístění KEG</label>
+      <div>
+        <div class="opts">
+          <label><input type="checkbox" name="keg_umisteni" value="pod_stolem"> Pod stolem</label>
+          <label><input type="checkbox" name="keg_umisteni" value="mistnost"> Místnost</label>
+          <label><input type="checkbox" name="keg_umisteni" value="box"> Box</label>
+        </div>
+        <input type="text" id="keg_poznamka" placeholder="poznámka k umístění KEG">
+      </div>
+    </div>
+    <div class="row">
+      <label>Umístění chladiče</label>
+      <div>
+        <div class="opts">
+          <label><input type="checkbox" name="chl_umisteni" value="pod_stolem"> Pod stolem</label>
+          <label><input type="checkbox" name="chl_umisteni" value="mistnost"> Místnost</label>
+          <label><input type="checkbox" name="chl_umisteni" value="sklep"> Sklep</label>
+          <label><input type="checkbox" name="chl_umisteni" value="prenoska"> Přenosný chladič</label>
+        </div>
+        <input type="text" id="chl_poznamka" placeholder="poznámka k umístění chladiče">
+      </div>
+    </div>
+    <div class="row">
+      <label>Typ montáže</label>
+      <div>
+        <div class="opts">
+          <label><input type="checkbox" name="typ_montaze" value="nova"> Nová</label>
+          <label><input type="checkbox" name="typ_montaze" value="rozsireni"> Rozšíření</label>
+          <label><input type="checkbox" name="typ_montaze" value="prestavba"> Přestavba</label>
+        </div>
+        <div class="opts">
+          <label><input type="checkbox" name="typ_montaze" value="mala"> Malá</label>
+          <label><input type="checkbox" name="typ_montaze" value="velka"> Velká</label>
+        </div>
+        <input type="text" id="typ_poznamka" placeholder="poznámka k typu montáže">
+      </div>
+    </div>
+    <div class="row">
+      <label>Vzdálenost (Km)</label>
+      <div>
+        <label><input type="radio" name="km" value="do50"> do 50</label>
+        <label><input type="radio" name="km" value="50-100"> 50–100</label>
+        <label><input type="radio" name="km" value="100plus"> 100+</label>
+      </div>
+    </div>
+    <div class="row">
+      <label>&nbsp;Počet techniků</label>
+      <div>
+        <input type="text" inputmode="numeric" id="pocet_techniku" placeholder="počet techniků">
+      </div>
+    </div>
+  </div>
+
+  <div class="row"><div><label></label></div></div>
+
+ <!-- CHLADIČE -->
+ 
+  <div class="section" id="chlSection">
+    <h2>CHLADIČE</h2>
+    <div class="rows"></div>
+    <div class="controls">
+      <button class="primary" type="button" onclick="addRow('chl')">+ Přidat chladič</button>
+    </div>
+    <textarea class="note-field" id="pozn_chl" placeholder="Poznámka k chladičům"></textarea>
+  </div>
+
+  <!-- PŘÍSLUŠENSTVÍ CHLADIČŮ -->
+  
+  <div class="section" id="chl_prisSection">
+    <h2>PŘÍSLUŠENSTVÍ CHLADIČŮ</h2>
+    <div class="rows"></div>
+    <div class="controls">
+      <button class="primary" type="button" onclick="addRow('chl_pris')">+ Přidat položku</button>
+    </div>
+    <textarea class="note-field" id="pozn_chl_pris" placeholder="Poznámka k příslušenství chladičů"></textarea>
+  </div>
+
+  <!-- VH HLAVY -->
+  
+  <div class="section" id="vh_hlavySection">
+    <h2>VÝČEPNÍ HLAVY (VH) + KRYTY</h2>
+    <div class="rows"></div>
+    <div class="controls">
+      <button class="primary" type="button" onclick="addRow('vh_hlavy')">+ Přidat VH/kryt</button>
+    </div>
+    <div style="margin-top:1rem;">
+      <label for="pivniVedeni">Počet pivních vedení (K)</label>
+      <select id="pivniVedeni">
+        <option value="">-- vyber počet --</option>
+        <option value="1">1K</option>
+        <option value="2">2K</option>
+        <option value="3">3K</option>
+        <option value="4">4K</option>
+        <option value="5">5K</option>
+        <option value="6">6K</option>
+		<option value="8">8K</option>
+      </select>
+    </div>
+    <textarea class="note-field" id="pozn_vh_hlavy" placeholder="Poznámka k výčepním hlavám a krytům"></textarea>
+  </div>
+
+  <!-- SPOJKY -->
+  
+  <div class="section" id="spojkySection">
+    <h2>SPOJKY</h2>
+    <div class="rows"></div>
+    <div class="controls">
+      <button class="primary" type="button" onclick="addRow('spojky')">+ Přidat položku</button>
+    </div>
+    <textarea class="note-field" id="pozn_spojky" placeholder="Poznámka ke spojkám"></textarea>
+  </div>
+
+  <!-- PLAKETY -->
+  
+  <div class="section" id="plaketySection">
+    <h2>PLAKETY</h2>
+    <div class="rows"></div>
+    <div class="controls">
+      <button class="primary" type="button" onclick="addRow('plakety')">+ Přidat plaketu</button>
+    </div>
+    <textarea class="note-field" id="pozn_plakety" placeholder="Poznámka k plaketám"></textarea>
+  </div>
+
+  <!-- KOHOUTY -->
+  
+  <div class="section" id="kohoutySection">
+    <h2>VÝČEPNÍ KOHOUTY</h2>
+    <div class="rows"></div>
+    <div class="controls">
+      <button class="primary" type="button" onclick="addRow('kohouty')">+ Přidat kohout</button>
+    </div>
+    <textarea class="note-field" id="pozn_kohouty" placeholder="Poznámka ke kohoutům"></textarea>
+  </div>
+
+  <!-- NARAŽEČE & DÍLY -->
+  
+  <div class="section" id="narazecSection">
+    <h2>NARAŽEČE &amp; DÍLY</h2>
+    <div class="rows"></div>
+    <div class="controls">
+      <button class="primary" type="button" onclick="addRow('narazec')">+ Přidat položku</button>
+    </div>
+    <textarea class="note-field" id="pozn_narazec" placeholder="Poznámka k naražečům a dílům"></textarea>
+  </div>
+
+  <!-- ODKAPNÍKY & OSTŘIK -->
+  
+  <div class="section" id="odkapnikySection">
+    <h2>ODKAPNÍKY &amp; OSTŘIK</h2>
+    <div class="rows"></div>
+    <div class="controls">
+      <button class="primary" type="button" onclick="addRow('odkapniky')">+ Přidat položku</button>
+    </div>
+    <textarea class="note-field" id="pozn_odkapniky" placeholder="Poznámka k odkapníkům"></textarea>
+  </div>
+
+  <!-- PLYN CO₂ / N₂ -->
+  
+  <div class="section" id="plynSection">
+    <h2>PLYN CO₂ / N₂</h2>
+    <div class="rows"></div>
+    <div class="controls">
+      <button class="primary" type="button" onclick="addRow('plyn')">+ Přidat položku</button>
+    </div>
+    <textarea class="note-field" id="pozn_plyn" placeholder="Poznámka k plynu"></textarea>
+  </div>
+
+  <!-- HADICE & PYTHON -->
+  
+  <div class="section" id="hadice_pythonSection">
+    <h2>HADICE &amp; PYTHON</h2>
+    <div class="rows"></div>
+    <div class="controls">
+      <button class="primary" type="button" onclick="addRow('hadice_python')">+ Přidat položku</button>
+    </div>
+    <textarea class="note-field" id="pozn_hadice_python" placeholder="Poznámka k hadicím a pythonu"></textarea>
+  </div>
+
+  <!-- SANITACE & BALÍČKY -->
+  
+  <div class="section" id="sanitaceSection">
+    <h2>SANITACE &amp; BALÍČKY</h2>
+    <div class="rows"></div>
+    <div class="controls">
+      <button class="primary" type="button" onclick="addRow('sanitace')">+ Přidat položku</button>
+    </div>
+    <textarea class="note-field" id="pozn_sanitace" placeholder="Poznámka k sanitaci a balíčkům"></textarea>
+  </div>
+
+  <!-- VH PŘÍSLUŠENSTVÍ -->
+  
+  <div class="section" id="vh_prislSection">
+    <h2>VH PŘÍSLUŠENSTVÍ (držáky, mezikruží)</h2>
+    <div class="rows"></div>
+    <div class="controls">
+      <button class="primary" type="button" onclick="addRow('vh_prisl')">+ Přidat položku</button>
+    </div>
+    <textarea class="note-field" id="pozn_vh_prisl" placeholder="Poznámka k VH příslušenství"></textarea>
+  </div>
+
+  <!-- DESKY & DRŽÁKY -->
+  
+  <div class="section" id="drzaky_deskySection">
+    <h2>DESKY &amp; DRŽÁKY</h2>
+    <div class="rows"></div>
+    <div class="controls">
+      <button class="primary" type="button" onclick="addRow('drzaky_desky')">+ Přidat položku</button>
+    </div>
+    <textarea class="note-field" id="pozn_drzaky_desky" placeholder="Poznámka k deskám a držákům"></textarea>
+  </div>
+
+  <!-- IZOLACE -->
+  
+  <div class="section" id="izolaceSection">
+    <h2>IZOLACE</h2>
+    <div class="rows"></div>
+    <div class="controls">
+      <button class="primary" type="button" onclick="addRow('izolace')">+ Přidat položku</button>
+    </div>
+    <textarea class="note-field" id="pozn_izolace" placeholder="Poznámka k izolaci"></textarea>
+  </div>
+
+  <!-- PULTY -->
+  
+  <div class="section" id="pultySection">
+    <h2>PULTY & MINIBOXY</h2>
+    <div class="rows"></div>
+    <div class="controls">
+      <button class="primary" type="button" onclick="addRow('pulty')">+ Přidat položku</button>
+    </div>
+    <textarea class="note-field" id="pozn_pulty" placeholder="Poznámka k pultům a boxům (použitý, šarže, atd.) V případě ATYP vepiš do poznámky"></textarea>
+  </div>
+
+  <!-- OSTATNÍ -->
+  
+  <div class="section" id="ostatniSection">
+    <h2>OSTATNÍ</h2>
+    <div class="rows"></div>
+    <div class="controls">
+      <button class="primary" type="button" onclick="addRow('ostatni')">+ Přidat položku</button>
+    </div>
+    <textarea class="note-field" id="pozn_ostatni" placeholder="Poznámka k ostatnímu"></textarea>
+  </div>
+
+<!-- DOHODY SEKCE-->
+<div class="section" id="dohodySection">
+  <h2>DOHODY A JINÁ UJEDNÁNÍ</h2>
+
+  <div class="row">
+    <label>1) Místo pro montáž výčepní hlavy</label>
+    <div>
+      zásuvka 230V/16A/B pro trafo:
+      <input type="radio" name="hlava_zasuvka" value="ano"> ANO
+      <input type="radio" name="hlava_zasuvka" value="ne"> NE
+      <br><br>
+      pracovní deska výčepu:
+      <input type="radio" name="hlava_pracdeska" value="ano"> ANO
+      <input type="radio" name="hlava_pracdeska" value="ne"> NE
+      <br>
+      otvor v desce:
+      <input type="radio" name="hlava_otvor" value="ano"> ANO
+      <input type="radio" name="hlava_otvor" value="ne"> NE
+      <br>
+      Materiál desky:
+      <!-- FIX: přidán name a value -->
+      <input type="checkbox" name="hlava_material[]" value="kuch_deska"> kuch. deska
+      <input type="checkbox" name="hlava_material[]" value="masiv"> masiv
+      <input type="checkbox" name="hlava_material[]" value="nerez"> nerez
+      <input type="checkbox" name="hlava_material[]" value="beton"> beton
+      <input type="checkbox" name="hlava_material[]" value="kamen"> kámen
+      <input type="text" id="hlava_material_jiny" placeholder="jiný materiál">
+    </div>
+  </div>
+
+  <div class="row">
+    <label>2) Prostor pro chladič</label>
+    <div>
+      zásuvka 230V/16A/B:
+      <input type="radio" name="chl_zasuvka" value="ano"> ANO
+      <input type="radio" name="chl_zasuvka" value="ne"> NE
+      <br>
+      dostatečný prostor pro odvětrání:
+      <input type="radio" name="chl_odvetrani" value="ano"> ANO
+      <input type="radio" name="chl_odvetrani" value="ne"> NE
+      <br>
+      podstavec pod chladič:
+      <input type="radio" name="chl_podstavec" value="ano"> ANO
+      <input type="radio" name="chl_podstavec" value="ne"> NE
+      <br>
+      <!-- FIX: přidán ID -->
+      <input type="text" id="chl_prostor_poznamka" placeholder="poznámka k prostoru">
+    </div>
+  </div>
+
+  <div class="row">
+    <label>3) Prostor pro sudy</label>
+    <div>
+      přívod studené vody:
+      <input type="radio" name="sudy_voda" value="ano"> ANO
+      <input type="radio" name="sudy_voda" value="ne"> NE
+      <br>
+      kulový uzávěr:
+      <select>
+        <option value="">-- vyber --</option>
+        <option value="3/8">3/8"</option>
+        <option value="1/2">1/2"</option>
+        <option value="3/4">3/4"</option>
+        <option value="ne">ne</option>
+      </select>
+      <br>
+      zajištění tlakové lahve:
+      <input type="radio" name="sudy_tlak" value="ano"> ANO
+      <input type="radio" name="sudy_tlak" value="ne"> NE
+      <br>
+      dochlazení k sudům:
+      <input type="radio" name="sudy_dochlazeni" value="ano"> ANO
+      <input type="radio" name="sudy_dochlazeni" value="ne"> NE
+      <br>
+      <!-- FIX: přidán ID -->
+      <input type="text" id="sudy_poznamka" placeholder="poznámka k sudům">
+    </div>
+  </div>
+
+  <div class="row">
+    <label>4) Stavební připravenost</label>
+    <div>
+      potrubní cesta – průrazy stěn, stropů, podlah:
+      <input type="radio" name="stav_prurazy" value="ano"> ANO
+      <input type="radio" name="stav_prurazy" value="ne"> NE
+      <br>
+      chránička pro python Ø120 mm, max. ohyb 30°:
+      <input type="radio" name="stav_chranicka" value="ano"> ANO
+      <input type="radio" name="stav_chranicka" value="ne"> NE
+      <br>
+      provlekací lanko:
+      <input type="radio" name="stav_lanko" value="ano"> ANO
+      <input type="radio" name="stav_lanko" value="ne"> NE
+      <br>
+      <!-- FIX: přidán ID -->
+      <input type="text" id="stav_poznamka" placeholder="poznámka ke stavební připravenosti">
+    </div>
+  </div>
+
+  <div class="row">
+    <label>5) Další specifikace, ujednání</label>
+    <!-- FIX: přidán ID -->
+    <textarea id="dohody_poznamka" rows="3" placeholder="Poznámky, specifické požadavky..."></textarea>
+  </div>
+
+  <div class="row">
+    <label>6) Předány pokyny k přípravě instalace VT?</label>
+    <div>
+      <label><input type="radio" name="pokyny_vt" value="ano"> ANO</label>
+      <label><input type="radio" name="pokyny_vt" value="ne"> NE</label>
+    </div>
+  </div>
+
+  <div class="row">
+    <label>7) Demontáž VT</label>
+    <div>
+      <textarea id="demontaz_poznamky" rows="3" placeholder="Poznámky, specifické požadavky..."></textarea>
+    </div>
+  </div>
+
+  <div class="row">
+    <label>8) KOFOLA</label>
+    <div class="opts" style="align-items:center;">
+      <label><input type="checkbox" name="kofola[]" value="kohout"> VÝČEPNÍ KOHOUT</label>
+      <label><input type="checkbox" name="kofola[]" value="narazec"> NARAŽEČ</label>
+      <label><input type="checkbox" name="kofola[]" value="plaketa"> PLAKETA</label>
+      <label><input type="checkbox" name="kofola[]" value="myci_hlava"> MYCÍ HLAVA</label>
+      <textarea id="kofola_poznamka" rows="3" placeholder="Poznámky, specifické požadavky..."></textarea>
+    </div>
+  </div>
+</div>
+<!-- END: DOHODY -->
+
+  <div class="section" id="vyplnilSection">
+    <h2>VYPLNIL DOTAZNÍK</h2>
+    <div class="row">
+      <label for="vyplnilJmeno">Jméno / kdo vyplnil</label>
+      <input id="vyplnilJmeno" name="vyplnilJmeno" type="text" placeholder="Zadej jméno"/>
+    </div>
+    <div class="row">
+      <label for="vyplnilDatum">Datum vyplnění</label>
+      <input id="vyplnilDatum" name="vyplnilDatum" type="date"/>
+    </div>
+  </div>
+</div>
+
+<div class="button-row">
+  <button class="primary" type="button" onclick="ulozitData()">💾 Uložit data</button>
+  <button class="ghost" type="button" onclick="document.getElementById('jsonInput').click()">📂 Načíst data</button>
+  <input id="jsonInput" type="file" accept=".json" style="display:none"/>
+</div>
+
+<!-- ŠABLONY S <option> ZDE LZE UPRAVOVAT POLOŽKY-->
+
+<template data-type="plakety">
+  <select>
+  
+    <option value="PN580005955">PN580005955 — Plaketa BI Pomelo FE C24 CZ</option>
+    <option value="PN580005954">PN580005954 — Plaketa BI Pomelo VH-C C24 CZ</option>
+    <option value="PN580005953">PN580005953 — Plaketa BI Pomelo VH-P C24 CZ</option>
+    <option value="PN580005957">PN580005957 — Plaketa BI světlý VH-C C24 CZ</option>
+    <option value="PN580005959">PN580005959 — Plaketa BI světlý VH-FE C24 CZ</option>
+    <option value="PN580005956">PN580005956 — Plaketa BI světlý VH-P C24 CZ</option>
+    <option value="PN580003928">PN580003928 — Plaketa čirá pro VH U rampa</option>
+    <option value="PN580005790">PN580005790 — Plaketa Frisco jablečný cider VH-C</option>
+    <option value="PN580005788">PN580005788 — Plaketa Frisco jablečný cider VH-FE</option>
+    <option value="PN580005789">PN580005789 — Plaketa Frisco jablečný cider VH-P</option>
+    <option value="PN580005965">PN580005965 — Plaketa GA 10 Nepaster FE C24 CZ/SK</option>
+    <option value="PN580005966">PN580005966 — Plaketa GA 10 Nepaster VH-C C24 CZ/SK</option>
+    <option value="PN580005967">PN580005967 — Plaketa GA 10 Nepaster VH-P C24 CZ</option>
+    <option value="PN580005968">PN580005968 — Plaketa GA 11 Nepaster FE C24 CZ/SK</option>
+    <option value="PN580005969">PN580005969 — Plaketa GA 11 Nepaster VH-C C24 CZ/SK</option>
+    <option value="PN580005970">PN580005970 — Plaketa GA 11 Nepaster VH-P C24 CZ</option>
+    <option value="PN580005971">PN580005971 — Plaketa GA 12 Nepaster FE C24 CZ/SK</option>
+    <option value="PN580005972">PN580005972 — Plaketa GA 12 Nepaster VH-C C24 CZ/SK</option>
+    <option value="PN580005973">PN580005973 — Plaketa GA 12 Nepaster VH-P C24 CZ</option>
+    <option value="PN580005974">PN580005974 — Plaketa GA Nefiltr FE C24 CZ</option>
+    <option value="PN580005975">PN580005975 — Plaketa GA Nefiltr VH-C C24 CZ</option>
+    <option value="PN580005976">PN580005976 — Plaketa GA Nefiltr VH-P C24 CZ</option>
+    <option value="PN580002975">PN580002975 — Plaketa Master Tmavý 18° „Fish eye“</option>
+    <option value="PN580002723">PN580002723 — Plaketa Master Tmavý 18° VH Cobra</option>
+    <option value="PN580002843">PN580002843 — Plaketa Master Tmavý 18° VH Prazdroj</option>
+    <option value="PN580005822">PN580005822 — Plaketa Peroni VH-C</option>
+    <option value="PN580005823">PN580005823 — Plaketa Peroni VH-FE</option>
+    <option value="PN580005821">PN580005821 — Plaketa Peroni VH-P</option>
+    <option value="PN580005887">PN580005887 — Plaketa PROUD VH-C</option>
+    <option value="PN580005886">PN580005886 — Plaketa PROUD VH-FE</option>
+    <option value="PN580005888">PN580005888 — Plaketa PROUD VH-P</option>
+    <option value="PN580003215">PN580003215 — Plaketa PU Nefiltrovaný  VH Prazdroj</option>
+    <option value="PN580003101">PN580003101 — Plaketa PU Nefiltrovaný „Fish eye“</option>
+    <option value="PN580003102">PN580003102 — Plaketa PU Nefiltrovaný VH Cobra</option>
+    <option value="PN580002977">PN580002977 — Plaketa PU sv. ležák ,,fish eye"</option>
+    <option value="PN580002713">PN580002713 — Plaketa PU sv. ležák VH Cobra</option>
+    <option value="PN580002157">PN580002157 — Plaketa PU sv. ležák VH Prazdroj</option>
+    <option value="PN580005516">PN580005516 — Plaketa RDG Ratar VH-C</option>
+    <option value="PN580005515">PN580005515 — Plaketa RDG Ratar VH-FE</option>
+    <option value="PN580005517">PN580005517 — Plaketa RDG Ratar VH-P</option>
+    <option value="PN580004481">PN580004481 — Plaketa RDG Rázná 10 ,,Fish Eye"</option>
+    <option value="PN580004482">PN580004482 — Plaketa RDG Rázná 10 VH Cobra I.</option>
+    <option value="PN580004491">PN580004491 — Plaketa RDG Rázná 10 VH Prazdroj I.</option>
+    <option value="PN580004485">PN580004485 — Plaketa RDG Ryze hořká 12 ,,Fish Eye"II.</option>
+    <option value="PN580004483">PN580004483 — Plaketa RDG Ryze hořká 12 VH Cobra II.</option>
+    <option value="PN580004484">PN580004484 — Plaketa RDG Ryze hořká 12 VH PrazdrojII.</option>
+    <option value="PN580006031">PN580006031 — PLAKETA SPECIÁLY C C25 CZ</option>
+    <option value="PN580006030">PN580006030 — PLAKETA SPECIÁLY FE C25 CZ</option>
+    <option value="PN580006029">PN580006029 — PLAKETA SPECIÁLY P C25 CZ</option>
+    <option value="PN580002980">PN580002980 — Plaketa Swist Cola „Fish eye“</option>
+    <option value="PN580003011">PN580003011 — Plaketa Swist Cola VH Cobra</option>
+    <option value="PN580003012">PN580003012 — Plaketa Swist Cola VH Prazdroj</option>
+    <option value="PN580004221">PN580004221 — Plaketa Swist Malina Fish Eye</option>
+    <option value="PN580004222">PN580004222 — Plaketa Swist Malina VH Cobra</option>
+    <option value="PN580004216">PN580004216 — Plaketa Swist Malina VH Prazdroj</option>
+    <option value="PN580002972">PN580002972 — Plaketa VPK 11° Medium „Fish eye“</option>
+    <option value="PN580002710">PN580002710 — Plaketa VPK 11° Medium VH Cobra</option>
+    <option value="PN580002684">PN580002684 — Plaketa VPK 11° Medium VH Prazdroj</option>
+    <option value="PN580002976">PN580002976 — Plaketa VPK Černý „Fish eye“</option>
+    <option value="PN580002716">PN580002716 — Plaketa VPK Černý VH Cobra</option>
+    <option value="PN580002160">PN580002160 — Plaketa VPK Černý VH Prazdroj</option>
+    <option value="PN580002979">PN580002979 — Plaketa VPK Světlý „Fish eye“</option>
+    <option value="PN580002715">PN580002715 — Plaketa VPK Svetlý VH Cobra</option>
+    <option value="PN580002159">PN580002159 — Plaketa VPK Světlý VH Prazdroj</option>
+  </select>
+</template>
+
+
+<template data-type="chl">
+  <select>
+  
+
+    <option value="233393">233393 — CHLADIČ ANTA C 5/8 - 120/ 2 pivní R290</option>
+    <option value="233378">233378 — CHLADIČ DELTON H 120/4 pivní R290</option>
+    <option value="233380">233380 — CHLADIČ DELTON H 120/5 pivní R290</option>
+    <option value="233376">233376 — CHLADIČ DELTON H 120/6 pivní R290</option>
+    <option value="238993">238993 — CHLADIČ DELTON H 200/6 pivní R290</option>
+    <option value="233370">233370 — CHLADIČ DELTON H 70/2 pivní R290</option>
+    <option value="233372">233372 — CHLADIČ DELTON H 70/3 pivní R290</option>
+    <option value="252434">252434 — CHLADIČ DELTON H200/2 SA  R 290</option>
+    <option value="271957">271957 — CHLADIČ DELTON V 120/5 pivní 10mm R290</option>
+    <option value="301904">301904 — CHLADIČ DELTON V 120/5 pivní 7mm R290</option>
+    <option value="301891">301891 — CHLADIČ DELTON V70/3 pivní 7mm R290 Digi</option>
+    <option value="233291">233291 — CHLADIČ suchý ANTA AK 40 2K s kompr.</option>
+    <option value="232931">232931 — CHLADIČ suchý ANTA MK 24 1K s kompr.</option>
+	<option value="235110">235110 - CHLADIČ suchý ANTA BK 70 2K s kompr.</option>
+  </select>
+</template>
+<template data-type="chl_pris">
+  <select>
+  
+
+    <option value="276821">276821 — Podstavec pod chladič–malý Delton H70</option>
+    <option value="276820">276820 — Podstavec pod chladič–velký H120 / H200</option>
+
+  </select>
+</template>
+
+
+<template data-type="vh_hlavy">
+  <select>
+  
+
+    <option value="233309">233309 — VH "U" rampa chrom, 4K LED</option>
+	<option value="233317">233317 — VH "U" rampa chrom, 5K LED</option>
+	<option value="233303">233303 — VH "U" rampa chrom, 6K LED</option>
+	<option value="233297">233297 — VH "U" rampa chrom, 8K LED</option>
+	<option value="233315">233315 — VH "U" rampa měď, 4K LED</option>
+	<option value="233305">233305 — VH "U" rampa měď, 5K LED</option>
+	<option value="233299">233299 — VH "U" rampa měď, 6K LED</option>
+	<option value="233293">233293 — VH "U" rampa měď, 8K LED</option>
+	<option value="233311">233311 — VH "U" rampa NiTi, 4K LED</option>
+	<option value="233307">233307 — VH "U" rampa NiTi, 5K LED</option>
+	<option value="233301">233301 — VH "U" rampa NiTi, 6K LED</option>
+	<option value="233295">233295 — VH "U" rampa NiTi, 8K LED</option>
+	<option value="231899">231899 — VH COBRA 1K NiTi, 10mm, Inox</option>
+    <option value="231727">231727 — VH COBRA 1K, chrom, 10mm, Inox</option>
+    <option value="231904">231904 — VH COBRA 2K NiTi, 10mm, Inox</option>
+    <option value="231729">231729 — VH COBRA 2K, chrom, 10mm, Inox</option>
+    <option value="231908">231908 — VH COBRA 3K NiTi, 10mm, Inox</option>
+    <option value="231731">231731 — VH COBRA 3K, chrom, 10mm, Inox</option>
+    <option value="232778">232778 — VH COBRA 4K NiTi, 10mm, Inox</option>
+    <option value="281827">281827 — VH COBRA 4K, chrom, 10mm, Inox</option>
+    <option value="274756">274756 — VH Mivokor 2K</option>
+    <option value="274757">274757 — VH Mivokor 3K</option>
+    <option value="274758">274758 — VH Mivokor 4K</option>
+    <option value="274759">274759 — VH Mivokor 5K</option>
+    <option value="297869">297869 — VH Mivokor 6K</option>
+    <option value="232834">232834 — VH NAUTILUS 1K</option>
+    <option value="232836">232836 — VH NAUTILUS 2K</option>
+    <option value="232838">232838 — VH NAUTILUS 3K</option>
+    <option value="232840">232840 — VH NAUTILUS 4K</option>
+    <option value="233083">233083 — VH NAUTILUS 5K</option>
+    <option value="298483">298483 — VH kryt GA, Mivokor, vz.24</option>
+    <option value="301070">301070 — VH kryt GA, Mivokor, vz.25</option>
+    <option value="298487">298487 — VH kryt PROUD, Mivokor, vz.24</option>
+    <option value="298473">298473 — VH kryt PU, Mivokor, vz.24</option>
+    <option value="298484">298484 — VH kryt RA, Mivokor, vz.24</option>
+    <option value="301069">301069 — VH kryt RA, Mivokor, vz.25</option>
+    <option value="298485">298485 — VH kryt VPK, Mivokor, vz.24</option>
+	<option value="jiné VH">--jiné VH--</option>
+	
+	
+  </select>
+</template>
+
+
+<template data-type="kohouty">
+  <select>
+  
+    <option value="232234">232234 — VÝČ.KOH.CELLI FC/2 S KOM.PVD KR.Z.35 ZLATÁ</option>
+    <option value="232292">232292 — VÝČ.KOH.CELLI FC/2CHR pro VH PU dl.Ručka STŘÍBRNÁ</option>
+    <option value="232290">232290 — VÝČ.KOH.CELLI FC/2PVD pro VH PU dl.Ručka ZLATÁ</option>
+    <option value="231843">231843 — VÝČ.KOHOUT CELLI S KOMP. TIN DL.ZÁ ZLATÁ</option>
+    <option value="299258">299258 — VÝČEPNÍ KOHOUT BAROKO, NEREZ CZSK C24 STŘÍBRNÁ</option>
+    <option value="299238">299238 — VÝČEPNÍ KOHOUT BAROKO, TITAN CZSK C24 ZLATÁ</option>
+    <option value="231837">231837 — VÝČEPNÍ KOHOUT CELLI CHROM KRÁTKÝ STŘÍBRNÁ</option>
+	<option value="PN580002920">PN580002920 — Hubice výčepního kohoutu CELLI se sítkem</option>
+  </select>
+</template>
+
+
+
+<template data-type="narazec">
+  <select>
+
+    <option value="231847">231847 — NARAŽEČ KORB DSI</option>
+    <option value="231845">231845 — NARAŽEČ KORB MM - 3S4A3CA00000</option>
+	<option value="231856">231856 - Mycí hlava</option>
+	<option value="231850">231850 - 
+  </select>
+</template>
+
+
+<template data-type="odkapniky">
+  <select>
+  
+ 
+    <option value="231804">231804 — ODKAPNÍK 400X200X20 NEREZ</option>
+    <option value="233419">233419 — ODKAPNÍK 400X200X20 NEREZ s ostřikem</option>
+    <option value="232226">232226 — ODKAPNÍK 600X200X20, NEREZ</option>
+    <option value="233421">233421 — ODKAPNÍK 600X200X20, NEREZ s ostřikem</option>
+    <option value="232284">232284 — ODKAPNÍK 800x200x20, NEREZ PRO VH PU</option>
+    <option value="233423">233423 — ODKAPNÍK 800x200x20, NEREZ s ostřikem</option>
+ 
+	
+  </select>
+</template>
+
+
+<template data-type="plyn">
+  <select>
+  
+  
+    <option value="274164">274164 — Redukční ventil CO2PremiumPlus(1)792-129</option>
+    <option value="274161">274161 — Redukční ventil N2 PremiumPlus(1)792-131</option>
+    <option value="232344">232344 — Redukční ventil RV CO (2výv.)-MM</option>
+    <option value="232343">232343 — Redukční ventil RV N2 (2výv.)-MM</option>
+    <option value="232391">232391 — Rozdělovač CO2,N2 - (2)</option>
+    <option value="232389">232389 — Rozdělovač CO2,N2 - (3)</option>
+    <option value="232387">232387 — Rozdělovač CO2,N2 - (4)</option>
+    <option value="249887">249887 — Rozdělovač CO2,N2 - (5)</option>
+    <option value="PN580002433">PN580002433 — Připojovací tlaková hadice pro CO2 1,5 m</option>
+    <option value="PN580002432">PN580002432 — Připojovací tlaková hadice pro N2 1,5 m</option>
+	<option value="PN580002430">PN580002430 — Držák RV + matka - MM</option>
+	<option value="PN580002437">PN580002437 - Meziregulační ventil 3 bar</option>
+	<option value="PN580002232">PN580002232 — DRŽÁK TLAKOVÝCH LAHVÍ - DVOJITÝ</option>
+    <option value="PN580002231">PN580002231 — DRŽÁK TLAKOVÝCH LAHVÍ - JEDNODUCHÝ</option>
+	
+  </select>
+</template>
+
+
+<template data-type="hadice_python">
+  <select>
+  
+  
+    <option value="PN580002882">PN580002882 — Hadice pivo 9,5 x 12,7 J.G.</option>
+    <option value="PN580002881">PN580002881 — Hadice tl. plyn 6,7 x 9,5 J.G.</option>
+    <option value="PN580003178">PN580003178 — Tlaková hadice 6,7 x 9,5 J.G.-13 bar</option>
+    <option value="PN580003352">PN580003352 — Python 2+2 JG 9,5x12,7 izolace 19 mm</option>
+    <option value="PN580003350">PN580003350 — Python 2+4 JG 9,5x12,7 izolace 19 mm</option>
+    <option value="PN580003374">PN580003374 — Python 2+6 JG 9,5x12,7 izolace 19 mm</option>
+    <option value="PN580005924">PN580005924 — Python 2+8 JG 9,5x12,7 izolace 19 mm</option>
+ 
+	
+  </select>
+</template>
+
+
+<template data-type="spojky">
+  <select>
+  
+
+<!-- Nejprve pořadí podle Miroslav Pojzl -->
+
+<option value="PN580003132">PN580003132 — SG spojka rohová 12,7 kov. matice 5/8</option>
+<option value="PN580003227">PN580003227 — SG spojka vnitřní závit 5/8"  9,5 mm</option>
+<option value="PN580003143">PN580003143 — SG spojka rovná 1/2</option>
+<option value="PN580003142">PN580003142 — SG spojka závit vnitřní 3/4" - 3/8"</option>
+<option value="PN580003977">PN580003977 — SG spojka rohová 90° nástrčná 3/8"-3/8"</option>
+<option value="PN580003378">PN580003378 — SG Spojka "DS" Rohová trubka 11 mm</option>
+<option value="PN580003379">PN580003379 — SG Spojka "DS" přímá trubka 11 mm</option>
+<option value="PN580005219">PN580005219 — SG spojka roh. 5/16"- had. 3/8"</option>
+<option value="PN580005612">PN580005612 — SG spojka U ukončení recirk. 1/2-1/2</option>
+<option value="PN580003180">PN580003180 — SG spojka závit vnitřní 3/8" - 3/8"</option>
+<option value="PN580003179">PN580003179 — SG spojka závit vnitřní 1/2" - 3/8"</option>
+<option value="PN580003181">PN580003181 — SG spojka závit vnější 3/8" - 3/8"</option>
+ 
+<!-- Zbytek původního seznamu, zachovaný - mám to zachovat takto?? -->
+
+<option value="PN580005993">PN580005993 — J-G koleno 5PI221208S, Barnie 3/8-1/4</option>
+<option value="PN580006075">PN580006075 — JG spojka, zpětná klapka 3/8", B01468</option>
+<option value="PN580003019">PN580003019 — Nástrčný trn PI251210S 3/8"x8mm</option>
+<option value="PN580005573">PN580005573 — SG spojka DS přímá trubka 8 mm</option>
+<option value="PN580003140">PN580003140 — SG spojka roh 90° nástrčná 1/2"-1/2"</option>
+<option value="PN580005614">PN580005614 — SG spojka rohová  1/2-1/2</option>
+<option value="PN580005212">PN580005212 — SG spojka rohová  3/8"-3/8"</option>
+<option value="PN580005933">PN580005933 — SG spojka rohová 12,7 křídl. matice 5/8</option>
+<option value="PN580003129">PN580003129 — SG spojka rohová 9,5 kov. matice 5/8</option>
+<option value="PN580005223">PN580005223 — SG spojka rovná 3/8"-3/8"</option>
+<option value="PN580005214">PN580005214 — SG spojka rovná 5/16"- had. 3/8"</option>
+<option value="PN580003182">PN580003182 — SG spojka rovná red.1/2"- 3/8"</option>
+<option value="PN580005615">PN580005615 — SG spojka T 3/8-3/8-3/8</option>
+<option value="PN580005611">PN580005611 — SG spojka vně. závit 1/4"-3/8"</option>
+<option value="PN580005613">PN580005613 — SG spojka Y 3/8-3/8-3/8</option>
+<option value="PN580005213">PN580005213 — SG spojka závit vnitř. 5/8" had. 1/2</option>
+<option value="PN580005608">PN580005608 — SG uzavírací kohout 3/8</option>
+<option value="PN580005606">PN580005606 — SG zátka 3/8</option>
+
+  </select>
+</template>
+
+
+<template data-type="sanitace">
+  <select>
+  
+
+    <option value="PN580003000">PN580003000 — Chemický startovací balíček</option>
+    <option value="231763">231763 — SANITAČNÍ BAŇKA KORB</option>
+  </select>
+</template>
+
+
+<template data-type="vh_prisl">
+  <select>
+  
+
+    <option value="PN580002154">PN580002154 — DRŽÁK PLAKET D=90,"S"+DIST.KR.5/8,CHROM</option>
+    <option value="PN580002155">PN580002155 — DRŽÁK PLAKET D=90,"S"+DIST.KR.5/8,TITAN</option>
+    <option value="PN580002150">PN580002150 — DRŽÁK PLAKETY KOMPL.- CHROM,  D=90MM</option>
+    <option value="PN580002151">PN580002151 — DRŽÁK PLAKETY KOMPL.- TITAN  D=90MM</option>
+    <option value="PN580002153">PN580002153 — MEZIKRUŽÍ NEREZ PRO MONTÁŽ VH COBRY</option>
+    <option value="PN580002663">PN580002663 — Mezikruží, pro VH Prazdroj</option>
+
+  </select>
+</template>
+
+
+<template data-type="drzaky_desky">
+  <select>
+
+    <option value="PN580002834">PN580002834 — Rozvodná deska malá 400x300-2 držáky had</option>
+    <option value="PN580002439">PN580002439 — Rozvodná deska velká 550x400-4 drž.hadic</option>
+	<option value="PN580002256">PN580002256 — DRŽÁK HADIC NEREZ ( ROZVOD PIVO )</option>
+	
+  </select>
+</template>
+
+
+<template data-type="izolace">
+  <select>
+
+    <option value="PN580005314">PN580005314 — Izolace K - Flex ST Ø10x9mm - malá</option>
+    <option value="PN580005315">PN580005315 — Izolace K - Flex ST Ø25x9mm - velká</option>
+	<option value="PN580002956">PN580002956 — S Izolační páska ARMAFLEX 50mmx15m VARIA</option>
+	<option value="PN580002952">PN580002952 — S Izolační páska 15mmx20m VARIA</option>
+    <option value="PN580002953">PN580002953 — S Izolační páska 50mm x33m VARIA</option>
+	<option value="PN580002954">PN580002954 - Ruční fólie parotěsná</option>
+	
+	
+  </select>
+</template>
+
+
+<template data-type="ostatni">
+  <select>
+
+    <option value="PN580002676">PN580002676 — Jehla prochlazení pro VH COBRA prům.7 mm</option>
+    <option value="232329">232329 — Vodovodní baterie dvoudřezová</option>
+    <option value="232333">232333 — Vodovodní baterie jednodřezová</option>
+    <option value="276871">276871 — Vodovodní baterie páková se sprchou</option>
+	<option value="PN580003687">PN580003687 — Napájecí trafo - VH Vinservice</option>
+    <option value="PN580002633">PN580002633 — Napájecí trafo 24V</option>
+	<option value="PN580004272">PN580004272 — Záslepka otvoru výčepního stolu 150 mm</option>
+    <option value="PN580004271">PN580004271 — Záslepka otvoru výčepního stolu 70 mm</option>
+	<option value="PN580005939">PN580005939 — Stahovací spona OET, 14,5mm nerez</option>
+    <option value="PN580005940">PN580005940 — Stahovací spona OET, 18,5mm nerez</option>
+	<option value="PN580003153">PN580003153 — Ostřik sklenic</option>
+
+	
+  </select>
+</template>
+
+
+<template data-type="pulty">
+  <select>
+  
+
+    <option value="281892">281892 — Výčepní stůl nechl.1900 PR SKLADOVÝ, C25</option>
+    <option value="281893">281893 — Výčepní stůl nechl.1900 LE SKLADOVÝ, C25</option>
+    <option value="281894">281894 — Výčepní stůl nechl.2450 PR SKLADOVÝ, C25</option>
+    <option value="281895">281895 — Výčepní stůl nechl.2450 LE SKLADOVÝ, C25</option>
+    <option value="281896">281896 — Výčepní stůl chlaz.3000 PR SKLADOVÝ, C25</option>
+    <option value="281897">281897 — Výčepní stůl chlaz.3000 LE SKLADOVÝ, C25</option>
+    <option value="281898">281898 — Výčepní stůl chlaz.4000 PR SKLADOVÝ, C25</option>
+    <option value="281899">281899 — Výčepní stůl chlaz.4000 LE SKLADOVÝ, C25</option>
+
+    <option value="233227">233227 — Chladící miniboxy pod stůl - pro 2 sudy</option>
+    <option value="233225">233225 — Chladící miniboxy pod stůl - pro 3 sudy</option>
+    <option value="233223">233223 — Chladící miniboxy pod stůl - pro 4 sudy</option>
+    <option value="232366">232366 — Chladící miniboxy pro 2 sudy rozkládací</option>
+    <option value="233247">233247 — Chladící miniboxy pro 3 sudy rozkládací</option>
+    <option value="232364">232364 — Chladící miniboxy pro 4 sudy rozkládací</option>
+    <option value="232362">232362 — Chladící miniboxy pro 6 sudů rozkládací</option>
+    <option value="232363">232363 — Chladící miniboxy pro 8 sudů rozkládací</option>
+    <option value="286915">286915 — Chladící miniboxy pro 12 sudů rozkládací</option>
+    <option value="286916">286916 — Chladící miniboxy pro 16 sudů rozkládací</option>
+
+    <option value="301692">301692 — Výčepní stůl chlaz. 2450 PR KATALOG, C25</option>
+    <option value="301696">301696 — Výčepní stůl chlaz. 2450 LE KATALOG, C25</option>
+    <option value="301702">301702 — Výčepní stůl chlaz. 3200 PR KATALOG, C25</option>
+    <option value="301680">301680 — Výčepní stůl chlaz. 3200 LE KATALOG, C25</option>
+    <option value="301693">301693 — Výčepní stůl chlaz. 4000 LE KATALOG, C25</option>
+    <option value="301688">301688 — Výčepní stůl chlaz. 4000 PR KATALOG, C25</option>
+
+    <option value="291769">291769 — Vana na pivní sklo 540x560, s agregátem</option>
+	<option value="jiný pult">--jiný pult--</option>
+
+	
+  </select>
+</template>
+
+</body>
+</html>
