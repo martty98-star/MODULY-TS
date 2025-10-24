@@ -11,8 +11,8 @@
   <link rel="icon" href="favicon.ico" type="image/x-icon">
   <link rel="shortcut icon" href="favicon.ico" type="image/x-icon">
 
-  <!-- DŮLEŽITÉ: defer = až po DOM, aby addRow nenarazil na neexistující sekce -->
-  <script src="script.js" defer></script>
+  <!-- ES6 Module Import – centrální inicializace -->
+  <script type="module" src="js/main.js"></script>
 </head>
 
 <body>
@@ -363,7 +363,7 @@
       <input type="radio" name="sudy_voda" value="ne"> NE
       <br>
       kulový uzávěr:
-      <select>
+      <select id="sudy_kulovy">
         <option value="">-- vyber --</option>
         <option value="3/8">3/8"</option>
         <option value="1/2">1/2"</option>
