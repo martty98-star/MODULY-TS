@@ -11,8 +11,11 @@
   <link rel="icon" href="favicon.ico" type="image/x-icon">
   <link rel="shortcut icon" href="favicon.ico" type="image/x-icon">
 
-  <!-- DŮLEŽITÉ: defer = až po DOM, aby addRow nenarazil na neexistující sekce -->
-  <script src="script.js" defer></script>
+  <!-- LZ-String kompresní knihovna pro zkrácení deeplinků -->
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/lz-string/1.5.0/lz-string.min.js" integrity="sha512-92HibRRPCOuS0G6fYnOUYyYGOMmPvSy5VEsLH8/gk87KZb55M/7glqMNFDMB/K48hhI/nZu0IVLhqTR4Lp5nKg==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+
+  <!-- ES6 Module Import – centrální inicializace -->
+  <script type="module" src="js/main.js"></script>
 </head>
 
 <body>
@@ -363,7 +366,7 @@
       <input type="radio" name="sudy_voda" value="ne"> NE
       <br>
       kulový uzávěr:
-      <select>
+      <select id="sudy_kulovy">
         <option value="">-- vyber --</option>
         <option value="3/8">3/8"</option>
         <option value="1/2">1/2"</option>
@@ -454,6 +457,7 @@
 <div class="button-row">
   <button class="primary" type="button" onclick="ulozitData()">💾 Uložit data</button>
   <button class="ghost" type="button" onclick="document.getElementById('jsonInput').click()">📂 Načíst data</button>
+  <button class="ghost" type="button" id="shareDeeplinkBtn">🔗 Sdílet odkaz</button>
   <input id="jsonInput" type="file" accept=".json" style="display:none"/>
 </div>
 
