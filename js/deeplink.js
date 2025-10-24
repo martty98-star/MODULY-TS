@@ -12,16 +12,26 @@ const DEEPLINK_PARAM = 'data';
 // === Encoding / Decoding ============================================================
 
 /**
- * Zakóduje data formuláře do Base64 URL-safe stringu
+ * Zakóduje data formuláře do komprimovaného URL-safe stringu pomocí LZ-String
+ * Pokud LZ-String není dostupný, použije fallback Base64 encoding
  * @param {Object} data - data formuláře (výstup z gatherDraftData)
- * @returns {string} Base64 URL-safe string
+ * @returns {string} Komprimovaný URL-safe string
  */
 function encodeFormData(data) {
   try {
     const jsonString = JSON.stringify(data);
+
+    // Pokusit se použít LZ-String kompresi (zkrátí URL o 60-70%)
+    if (typeof LZString !== 'undefined' && LZString.compressToEncodedURIComponent) {
+      const compressed = LZString.compressToEncodedURIComponent(jsonString);
+      // Přidat prefix pro rozpoznání komprimovaných dat
+      return 'c_' + compressed;
+    }
+
+    // Fallback: Base64 URL-safe encoding (pokud LZ-String není dostupný)
+    console.warn('LZ-String není dostupný, používám Base64 fallback');
     const base64 = btoa(unescape(encodeURIComponent(jsonString)));
-    // URL-safe Base64 (nahradit +/= znaky)
-    return base64.replace(/\+/g, '-').replace(/\//g, '_').replace(/=/g, '');
+    return 'b_' + base64.replace(/\+/g, '-').replace(/\//g, '_').replace(/=/g, '');
   } catch (e) {
     console.error('Encoding selhalo:', e);
     throw new Error('Nepodařilo se zakódovat data formuláře');
@@ -29,20 +39,41 @@ function encodeFormData(data) {
 }
 
 /**
- * Dekóduje Base64 URL-safe string zpět na data formuláře
- * @param {string} encoded - Base64 URL-safe string
+ * Dekóduje komprimovaný nebo Base64 URL-safe string zpět na data formuláře
+ * Automaticky detekuje formát podle prefixu (c_ = LZ-String, b_ = Base64)
+ * @param {string} encoded - Komprimovaný nebo Base64 URL-safe string
  * @returns {Object} data formuláře
  */
 function decodeFormData(encoded) {
   try {
-    // Převést zpět z URL-safe Base64
-    let base64 = encoded.replace(/-/g, '+').replace(/_/g, '/');
-    // Doplnit padding
-    while (base64.length % 4) {
-      base64 += '=';
+    // Detekce formátu podle prefixu
+    if (encoded.startsWith('c_')) {
+      // LZ-String komprimovaná data
+      const compressed = encoded.substring(2);
+      if (typeof LZString !== 'undefined' && LZString.decompressFromEncodedURIComponent) {
+        const jsonString = LZString.decompressFromEncodedURIComponent(compressed);
+        if (!jsonString) throw new Error('LZ-String dekomprese selhala');
+        return JSON.parse(jsonString);
+      }
+      throw new Error('LZ-String není dostupný pro dekódování');
+    } else if (encoded.startsWith('b_')) {
+      // Base64 fallback data
+      const base64data = encoded.substring(2);
+      let base64 = base64data.replace(/-/g, '+').replace(/_/g, '/');
+      while (base64.length % 4) {
+        base64 += '=';
+      }
+      const jsonString = decodeURIComponent(escape(atob(base64)));
+      return JSON.parse(jsonString);
+    } else {
+      // Zpětná kompatibilita: pokus o dekódování jako Base64 bez prefixu
+      let base64 = encoded.replace(/-/g, '+').replace(/_/g, '/');
+      while (base64.length % 4) {
+        base64 += '=';
+      }
+      const jsonString = decodeURIComponent(escape(atob(base64)));
+      return JSON.parse(jsonString);
     }
-    const jsonString = decodeURIComponent(escape(atob(base64)));
-    return JSON.parse(jsonString);
   } catch (e) {
     console.error('Decoding selhal:', e);
     throw new Error('Nepodařilo se dekódovat data z odkazu');
@@ -77,10 +108,16 @@ export async function copyDeeplinkToClipboard() {
   try {
     const deeplink = generateDeeplink();
 
+    // Info o kompresi
+    const isCompressed = deeplink.includes('?data=c_');
+    const compressionInfo = isCompressed
+      ? '\n🗜️ Odkaz je komprimován pomocí LZ-String'
+      : '';
+
     // Pokusit se použít Clipboard API (moderní prohlížeče)
     if (navigator.clipboard && navigator.clipboard.writeText) {
       await navigator.clipboard.writeText(deeplink);
-      alert('✅ Odkaz zkopírován do schránky!\n\nMůžeš ho poslat kolegovi nebo si ho uložit.');
+      alert(`✅ Odkaz zkopírován do schránky!${compressionInfo}\n\nMůžeš ho poslat kolegovi nebo si ho uložit.\n\nDélka URL: ${deeplink.length} znaků`);
       return deeplink;
     }
 
@@ -94,7 +131,7 @@ export async function copyDeeplinkToClipboard() {
     document.execCommand('copy');
     document.body.removeChild(textarea);
 
-    alert('✅ Odkaz zkopírován do schránky!\n\nMůžeš ho poslat kolegovi nebo si ho uložit.');
+    alert(`✅ Odkaz zkopírován do schránky!${compressionInfo}\n\nMůžeš ho poslat kolegovi nebo si ho uložit.\n\nDélka URL: ${deeplink.length} znaků`);
     return deeplink;
   } catch (err) {
     console.error('Kopírování selhalo:', err);
