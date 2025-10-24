@@ -151,8 +151,24 @@ export function ensureDefaultRows() {
 // === SELECT FILTER – vyhledávání v dlouhých select elementech =======================
 
 const norm = s => (s || '').normalize('NFD').replace(/[\u0300-\u036f]/g, '').toLowerCase();
-const isSK = (document.documentElement.dataset.lang || 'cz') === 'sk';
-const PH = isSK ? 'hľadať…' : 'hledat…';
+
+// Lazy getters pro hodnoty závislé na document (nespouštět při importu!)
+let _isSK = null;
+let _PH = null;
+
+function getIsSK() {
+  if (_isSK === null) {
+    _isSK = (document?.documentElement?.dataset?.lang || 'cz') === 'sk';
+  }
+  return _isSK;
+}
+
+function getPH() {
+  if (_PH === null) {
+    _PH = getIsSK() ? 'hľadať…' : 'hledat…';
+  }
+  return _PH;
+}
 
 const templateCache = new Map();
 
@@ -223,14 +239,14 @@ export function enhanceSelect(sel) {
   const input = document.createElement('input');
   input.className = 'select-filter';
   input.type = 'text';
-  input.placeholder = (isSK ? 'Začni ' : 'Začni ') + PH;
+  input.placeholder = (getIsSK() ? 'Začni ' : 'Začni ') + getPH();
 
   const tools = document.createElement('div');
   tools.className = 'select-filter-tools';
   const resetBtn = document.createElement('button');
   resetBtn.type = 'button';
   resetBtn.className = 'select-filter-reset';
-  resetBtn.textContent = isSK ? 'Zrušiť filter' : 'Zrušit filtr';
+  resetBtn.textContent = getIsSK() ? 'Zrušiť filter' : 'Zrušit filtr';
   const count = document.createElement('span');
   count.className = 'select-filter-count';
 

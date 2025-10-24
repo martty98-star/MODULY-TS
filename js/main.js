@@ -120,6 +120,21 @@ document.addEventListener('DOMContentLoaded', () => {
   console.log('✅ LASO PWA inicializace dokončena');
 });
 
+// === SERVICE WORKER REGISTRACE ======================================================
+
+if ('serviceWorker' in navigator) {
+  window.addEventListener('load', () => {
+    navigator.serviceWorker
+      .register('./sw.js')
+      .then(registration => {
+        console.log('✅ Service Worker zaregistrován:', registration.scope);
+      })
+      .catch(err => {
+        console.warn('❌ Service Worker registrace selhala:', err);
+      });
+  });
+}
+
 // === DETEKCE iOS – pro případnou speciální logiku ==================================
 
 export function isIOS() {
